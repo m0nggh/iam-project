@@ -1,0 +1,33 @@
+# Local development dependencies – just MongoDB.
+#
+#   npm run setup      → start MongoDB in the background (waits until it is ready)
+#   npm run dev        → the app runs on your machine and connects to mongodb://127.0.0.1:27018/iam
+#   npm run teardown   → stop and remove the container (data is kept)
+#   npm run reset      → remove the container AND its data, for a clean start
+#
+# View the data with Compass or mongosh at: mongodb://127.0.0.1:27018
+
+services:
+  mongo:
+    image: mongo:8
+    # Fixed name so commands are predictable: docker exec -it iam-mongo mongosh iam
+    container_name: iam-mongo
+    restart: unless-stopped
+    ports:
+      # 27018 (not MongoDB's default 27017) so it never clashes with a MongoDB already installed
+      # on the developer's machine. Bound to 127.0.0.1 so it is reachable only from this machine,
+      # and so "localhost" can't silently resolve (IPv6 ::1 vs IPv4) to a different server.
+      - "127.0.0.1:27018:27017"
+    volumes:
+      # Named volume: data survives `teardown`; only `reset` deletes it.
+      - mongo-data:/data/db
+    healthcheck:
+      # `--wait` in `npm run setup` blocks until this passes, so the app never starts before MongoDB is ready.
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  mongo-data:

@@ -1,0 +1,11 @@
+{
+  // Production build: compiles src/ → dist/ (used by `npm run build` and the Dockerfile).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src"]
+}
