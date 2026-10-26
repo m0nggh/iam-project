@@ -16,5 +16,6 @@ export function createGraphClient(config: AppConfig): GraphClient {
     });
   }
 
-  return createGraphService({ getToken: createTokenProvider(config.azure!) });
+  if (!config.azure) throw new Error('GRAPH_MODE=live requires Azure credentials');
+  return createGraphService({ getToken: createTokenProvider(config.azure) });
 }

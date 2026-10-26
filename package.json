@@ -13,7 +13,7 @@
     "teardown": "docker compose down",
     "reset": "docker compose down -v",
     "docker:build": "docker build -t iam-group-sync .",
-    "docker:run": "docker run --rm --name iam-app -p 3000:3000 --env-file .env -e MONGODB_URI=mongodb://host.docker.internal:27018/iam iam-group-sync",
+    "docker:run": "docker run --rm --name iam-app -p 3000:3000 --env-file .env --add-host=host.docker.internal:host-gateway -e MONGODB_URI=mongodb://host.docker.internal:27018/iam iam-group-sync",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",

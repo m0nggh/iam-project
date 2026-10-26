@@ -41,6 +41,8 @@ export class GraphApiError extends AppError {
     message: string,
     { status = 502, code = 'GRAPH_ERROR', graphStatus, graphCode, graphRequestId, cause }: GraphApiErrorOptions = {},
   ) {
-    super(message, { status, code, cause, details: { graphStatus, graphCode, graphRequestId } });
+    // Only failures that got an HTTP response from Graph have Graph diagnostics to report.
+    const details = graphStatus === undefined ? undefined : { graphStatus, graphCode, graphRequestId };
+    super(message, { status, code, cause, details });
   }
 }

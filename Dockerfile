@@ -6,8 +6,10 @@
 #   runtime – the final image: Node + production node_modules + compiled dist/, nothing else
 #
 # Build:  docker build -t iam-group-sync .
-# Run:    docker run --rm -p 3000:3000 --env-file .env -e MONGODB_URI=mongodb://host.docker.internal:27018/iam iam-group-sync
-#         (host.docker.internal = "my machine" as seen from inside a container, e.g. the `npm run setup` MongoDB)
+# Run:    docker run --rm -p 3000:3000 --env-file .env --add-host=host.docker.internal:host-gateway \
+#           -e MONGODB_URI=mongodb://host.docker.internal:27018/iam iam-group-sync
+#         (host.docker.internal = "my machine" as seen from inside a container, e.g. the `npm run setup` MongoDB;
+#          --add-host makes that name resolve on Linux Docker Engine as well as Docker Desktop)
 
 # Pin the Node major version in one place; Alpine keeps the base image small (~50 MB).
 ARG NODE_VERSION=22

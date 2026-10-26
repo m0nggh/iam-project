@@ -161,10 +161,11 @@ npm run docker:run     # run the image on http://localhost:3000 (Ctrl+C to stop)
 
 ```bash
 docker run --rm --name iam-app -p 3000:3000 --env-file .env \
+  --add-host=host.docker.internal:host-gateway \
   -e MONGODB_URI=mongodb://host.docker.internal:27018/iam iam-group-sync
 ```
 
-Stop `npm run dev` first – both use port 3000. `host.docker.internal` is how a container reaches MongoDB on your machine (Docker Desktop).
+Stop `npm run dev` first – both use port 3000. `host.docker.internal` is how a container reaches MongoDB on your machine; `--add-host ...:host-gateway` makes that name work on Linux Docker Engine too, not just Docker Desktop.
 
 ### Option B – run the published image (no repo needed)
 
