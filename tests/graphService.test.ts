@@ -31,7 +31,7 @@ describe('graphService.listSecurityGroups', () => {
     ]);
 
     const groups = await graph.listSecurityGroups();
-    expect(groups.map((g) => g.id)).toEqual(['a', 'b']);
+    expect(groups.map((g) => g.id)).toEqual(['a', 'b', 'c']);
   });
 
   it('turns a Graph 401 into a 502 GRAPH_UNAUTHORIZED error', async () => {
